@@ -1,0 +1,4 @@
+node_modules/
+
+# '**' ignores all package-lock.json files, even in nested subfolders.
+**/package-lock.json 
