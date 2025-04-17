@@ -55,7 +55,6 @@ particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 
 // Can have diffrent colors for each particle by adding color attribute we different color values.
 particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
 
-
 // Material:
 const particlesMaterial = new THREE.PointsMaterial({ 
     // color: 0xff69b4 
@@ -76,25 +75,14 @@ particlesMaterial.alphaMap = particleTexture
 // particlesMaterial. depthTest = false
 
 // 3- Depth Write - The particles won't write to the depth buffer — so when they’re drawn, they don’t block other objects behind them.
-// In 3D rendering, there is something called a depth buffer (also known as a Z-buffer). 
-// This buffer keeps track of how far each pixel on the screen is from the camera — basically, it helps the renderer know which object is in front of which.
-
-// When depthWrite is true (which is the default):
-//  - The material writes to the depth buffer, meaning it updates the "depth map" of what's visible to the camera.
-//  - If an object is behind something else, it won't be rendered because it's occluded.
-
-// When depthWrite is false:
-//  - The material does not update the depth buffer.
-//  - This means that other things can be drawn behind or in front of it without being hidden properly, which is sometimes useful for transparent objects like particles, smoke, or fog — or in your case, a galaxy made of particles.
 particlesMaterial.depthWrite = false // deactiivating depthWrite prevents z-buffer issues
 
 // There is also a fourth solution which is very different from the other three. can also impact the performances.
 // 4- Blending - defines how the color of your transparent object mixes with the colors behind it — kind of like how Photoshop layers blend.
-particlesMaterial.blending = THREE.AdditiveBlending // can affect performance, especially if you have a large number of particles.
+particlesMaterial.blending = THREE.AdditiveBlending // can affect performance, especially if you have a large number of particles 
 particlesMaterial.vertexColors = true
 
-
-// Points: 
+// Points:
 
 // Mesh vs Points
 // Mesh = shows the whole shape (the surface).
@@ -168,26 +156,16 @@ const tick = () =>
     // particles.rotation.y = elapsedTime * 0.2  // Animates all the particles as a whole
  
     for (let i = 0; i < particleCount; i++){
-        // Each particle uses 3 values (X, Y, Z), stored sequentially in the array.
-        // 'i' is the current particle index.
-        // 'i * 3' gives the starting index of that particle's X value in the array.
-
-        // Why i * 3?
-        // Because each particle takes 3 slots: X, Y, and Z.
-        // So:
-        // Particle 0 → starts at index 0 * 3 = 0 → positions[0], [1], [2]
-        // Particle 1 → starts at index 1 * 3 = 3 → positions[3], [4], [5]
-        // Particle 2 → starts at index 2 * 3 = 6 → positions[6], [7], [8]
-
-        const i3 = i * 3  // i3 is the starting index for this particle’s X, Y, Z in the array
-    
-        const x = particlesGeometry.attributes.position.array[i3] // Gets X value
+        const i3 = i * 3 // Multiplies the loop index i by 3 and assigns it to a new variable.
+        // So i3 is the starting index for each particle’s position in the array.
+        // positions[i3] = Math.random();     // x
+        // positions[i3 + 1] = Math.random(); // y
+        // positions[i3 + 2] = Math.random(); // z
+        const x = particlesGeometry.attributes.position.array[i3]
         particlesGeometry.attributes.position.array[i3 + 1] = Math.sin(elapsedTime + x) // Targeting only the y position of each particle, one by one.
-        
-        // Optional debug:
-        // console.log(particlesGeometry.attributes.position.array)
+         // console.log(particlesGeometry.attributes.position.array)
     }
-    particlesGeometry.attributes.position.needsUpdate = true // Inform Three.js that we updated the position attribute manually
+    particlesGeometry.attributes.position.needsUpdate = true
 
     // Update controls
     controls.update()
