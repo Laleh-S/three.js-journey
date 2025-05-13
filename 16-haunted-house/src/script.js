@@ -217,7 +217,11 @@ const floor = new THREE.Mesh(
 // If adding displacementMap the door still looks flat, it means we need to add more vertices to planeGeometry.
 // So we add (100x100) in planeGeometry.
 
-floor.rotation.x = - Math.PI / 2 // Math.PI is half a circle then we divided by 2 to rotate quarter of a circle.
+// By default, THREE.PlaneGeometry is created standing up vertically, like a wall. But we want it to be flat — like the ground we walk on.
+// Math.PI is 180 degrees.
+// So Math.PI * 0.5 is 90 degrees.
+// The negative sign means we rotate clockwise around the X-axis.
+floor.rotation.x = - Math.PI / 2 // Rotates the floor by 90 degrees, so it's lying flat like the ground.
 scene.add(floor)
 
 gui.add(floor.material, 'displacementScale').min(0).max(1).step(0.001).name('floorDisplacementScale')
